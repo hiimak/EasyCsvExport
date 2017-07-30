@@ -45,6 +45,12 @@ namespace EasyCsvExporter
             if (save.FileName != null)
             {
                 FilePath = save.FileName;
+
+                if (save.OverwritePrompt)
+                {
+                    File.WriteAllText(FilePath, string.Empty);
+                }
+
                 StreamWriter writer = File.AppendText(FilePath);
 
                 if (HasClmnHeader)
@@ -57,15 +63,18 @@ namespace EasyCsvExporter
                     writer.WriteLine(header);
                 }
 
-                for (int i = 0; i < dt.Rows.Count; i++)
+                for (int i = 0; i <= dt.Rows.Count-1; i++)
                 {
                     string cellvalue = "";
-                    for (int j = 0; j < dt.Columns.Count; j++)
+
+                    for (int j = 0; j <= dt.Columns.Count-1; j++)
                     {
                         cellvalue += dt.Rows[i][j].ToString() + ";";
                     }
                     writer.WriteLine(cellvalue);
                 }
+                Debug.Log("Export CSV File: " + FilePath); 
+                writer.Close();
             }
         }
 
