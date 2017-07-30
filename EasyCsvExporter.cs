@@ -36,12 +36,10 @@ namespace EasyCsvExporter
         public void ExportCsv(DataTable dt)
         {
             SaveFileDialog save = new SaveFileDialog();
-            save.ShowDialog();
 
-            save.Filter = "CSV File|*.csv";
+            string filter = "CSV file (*.csv)|*.csv|";
 
-            save.ShowDialog();
-
+            save.Filter = filter;
 
             if (save.ShowDialog() == true)
             {
