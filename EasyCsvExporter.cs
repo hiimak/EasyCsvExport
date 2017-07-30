@@ -37,7 +37,7 @@ namespace EasyCsvExporter
         {
             SaveFileDialog save = new SaveFileDialog();
 
-            string filter = "CSV file (*.csv)|*.csv|";
+            string filter = "CSV file (*.csv)|*.csv";
 
             save.Filter = filter;
             save.ShowDialog();
@@ -49,35 +49,24 @@ namespace EasyCsvExporter
 
                 if (HasClmnHeader)
                 {
+                    string header = "";
                     foreach (DataColumn clmn in dt.Columns)
                     {
-                        writer.WriteLine(clmn.ColumnName + ";");
+                        header += clmn.ColumnName + ";";
                     }
+                    writer.WriteLine(header);
                 }
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
+                    string cellvalue = "";
                     for (int j = 0; j < dt.Columns.Count; j++)
                     {
-                        string cellvalue = dt.Rows[i][j].ToString();
-
-                        if (cellvalue != null)
-                        {
-                            writer.Write(cellvalue + ";");
-                        }
-                        else
-                        {
-                            writer.Write(";");
-                        }
-
-                        writer.WriteLine();
+                        cellvalue += dt.Rows[i][j].ToString() + ";";
                     }
+                    writer.WriteLine(cellvalue);
                 }
-
-                writer.Close();
             }
-
-
         }
 
         /// <summary>
