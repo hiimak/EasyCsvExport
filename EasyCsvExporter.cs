@@ -25,8 +25,8 @@ namespace EasyCsvExporter
         /// <param name="dt"></param>
         public void ExportCSVAsync(DataTable dt)
         {
-           export = new Thread(() => ExportCsv(dt));
-           export.Start();
+            export = new Thread(() => ExportCsv(dt));
+            export.Start();
         }
 
         /// <summary>
@@ -42,38 +42,45 @@ namespace EasyCsvExporter
 
             save.ShowDialog();
 
-            FilePath = save.FileName;
 
-            StreamWriter writer = File.AppendText(FilePath);
-
-            if (HasClmnHeader)
+            if (save.ShowDialog() == true)
             {
-                foreach (DataColumn clmn in dt.Columns)
+                FilePath = save.FileName;
+                if (filePath != null)
                 {
-                    writer.WriteLine(clmn.ColumnName + ";");
+                    StreamWriter writer = File.AppendText(FilePath);
+
+                    if (HasClmnHeader)
+                    {
+                        foreach (DataColumn clmn in dt.Columns)
+                        {
+                            writer.WriteLine(clmn.ColumnName + ";");
+                        }
+                    }
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        for (int j = 0; j < dt.Columns.Count; j++)
+                        {
+                            string cellvalue = dt.Rows[i][j].ToString();
+
+                            if (cellvalue != null)
+                            {
+                                writer.Write(cellvalue + ";");
+                            }
+                            else
+                            {
+                                writer.Write(";");
+                            }
+
+                            writer.WriteLine();
+                        }
+                    }
+
+                    writer.Close();
                 }
             }
 
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                for (int j = 0; j < dt.Columns.Count; j++)
-                {
-                    string cellvalue = dt.Rows[i][j].ToString();
-
-                    if (cellvalue != null)
-                    {
-                        writer.Write(cellvalue + ";");
-                    }
-                    else
-                    {
-                        writer.Write(";");
-                    }
-
-                    writer.WriteLine();
-                }
-            }
-
-            writer.Close();
         }
 
         /// <summary>
