@@ -40,44 +40,43 @@ namespace EasyCsvExporter
             string filter = "CSV file (*.csv)|*.csv|";
 
             save.Filter = filter;
+            save.ShowDialog();
 
-            if (save.ShowDialog() == true)
+            if (save.FileName != null)
             {
                 FilePath = save.FileName;
-                if (filePath != null)
+                StreamWriter writer = File.AppendText(FilePath);
+
+                if (HasClmnHeader)
                 {
-                    StreamWriter writer = File.AppendText(FilePath);
-
-                    if (HasClmnHeader)
+                    foreach (DataColumn clmn in dt.Columns)
                     {
-                        foreach (DataColumn clmn in dt.Columns)
-                        {
-                            writer.WriteLine(clmn.ColumnName + ";");
-                        }
+                        writer.WriteLine(clmn.ColumnName + ";");
                     }
-
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        for (int j = 0; j < dt.Columns.Count; j++)
-                        {
-                            string cellvalue = dt.Rows[i][j].ToString();
-
-                            if (cellvalue != null)
-                            {
-                                writer.Write(cellvalue + ";");
-                            }
-                            else
-                            {
-                                writer.Write(";");
-                            }
-
-                            writer.WriteLine();
-                        }
-                    }
-
-                    writer.Close();
                 }
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    for (int j = 0; j < dt.Columns.Count; j++)
+                    {
+                        string cellvalue = dt.Rows[i][j].ToString();
+
+                        if (cellvalue != null)
+                        {
+                            writer.Write(cellvalue + ";");
+                        }
+                        else
+                        {
+                            writer.Write(";");
+                        }
+
+                        writer.WriteLine();
+                    }
+                }
+
+                writer.Close();
             }
+
 
         }
 
