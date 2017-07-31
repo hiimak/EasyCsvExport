@@ -13,27 +13,30 @@ namespace EasyCsvExporter
     {
 
         private string filePath;
+        private string clmnSeperator;
         private bool hasClmnHeader;
         private Thread export;
 
+
         public string FilePath { get => filePath; set => filePath = value; }
         public bool HasClmnHeader { get => hasClmnHeader; set => hasClmnHeader = value; }
+        public string ClmnSeperator { get => clmnSeperator; set => clmnSeperator = value; }
 
         /// <summary>
         /// Saves a CSV File from a DataTable as a new Thread
         /// </summary>
-        /// <param name="dt"></param>
-        public void ExportCSVAsync(DataTable dt)
+        /// <param name="data"></param>
+        public void ExportCSVAsync(DataTable data)
         {
-            export = new Thread(() => ExportCsv(dt));
+            export = new Thread(() => ExportCsv(data));
             export.Start();
         }
 
         /// <summary>
         /// Saves a CSV File from a DataTable
         /// </summary>
-        /// <param name="dt"></param>
-        public void ExportCsv(DataTable dt)
+        /// <param name="data"></param>
+        public void ExportCsv(DataTable data)
         {
             SaveFileDialog save = new SaveFileDialog();
 
@@ -56,24 +59,24 @@ namespace EasyCsvExporter
                 if (HasClmnHeader)
                 {
                     string header = "";
-                    foreach (DataColumn clmn in dt.Columns)
+                    foreach (DataColumn clmn in data.Columns)
                     {
-                        header += clmn.ColumnName + ";";
+                        header += clmn.ColumnName + ClmnSeperator;
                     }
                     writer.WriteLine(header);
                 }
 
-                for (int i = 0; i <= dt.Rows.Count-1; i++)
+                for (int i = 0; i <= data.Rows.Count-1; i++)
                 {
                     string cellvalue = "";
 
-                    for (int j = 0; j <= dt.Columns.Count-1; j++)
+                    for (int j = 0; j <= data.Columns.Count-1; j++)
                     {
-                        cellvalue += dt.Rows[i][j].ToString() + ";";
+                        cellvalue += data.Rows[i][j].ToString() + ClmnSeperator;
                     }
                     writer.WriteLine(cellvalue);
                 }
-                Debug.Log("Export CSV File: " + FilePath); 
+                Console.WriteLine("Export CSV File: " + FilePath); 
                 writer.Close();
             }
         }
@@ -81,18 +84,18 @@ namespace EasyCsvExporter
         /// <summary>
         /// Saves a CSV File from a string[][] as a new Thread
         /// </summary>
-        /// <param name="dt"></param>
-        public void ExportCSVAsync(string[][] dt)
+        /// <param name="data"></param>
+        public void ExportCSVAsync(string[][] data)
         {
-            export = new Thread(() => ExportCsv(dt));
+            export = new Thread(() => ExportCsv(data));
             export.Start();
         }
 
         /// <summary>
         /// Saves a CSV File from a string[][]
         /// </summary>
-        /// <param name="dt"></param>
-        public void ExportCsv(string[][] dt)
+        /// <param name="data"></param>
+        public void ExportCsv(string[][] data)
         {
 
         }
@@ -100,8 +103,8 @@ namespace EasyCsvExporter
         /// <summary>
         /// Saves a CSV File from a multidimensional int array
         /// </summary>
-        /// <param name="dt"></param>
-        public void ExportCsv(int[][] dt)
+        /// <param name="data"></param>
+        public void ExportCsv(int[][] data)
         {
 
         }
@@ -109,18 +112,18 @@ namespace EasyCsvExporter
         /// <summary>
         /// Saves a CSV File from a string[][] as a new Thread
         /// </summary>
-        /// <param name="dt"></param>
-        public void ExportCSVAsync(int[][] dt)
+        /// <param name="data"></param>
+        public void ExportCSVAsync(int[][] data)
         {
-            export = new Thread(() => ExportCsv(dt));
+            export = new Thread(() => ExportCsv(data));
             export.Start();
         }
 
         /// <summary>
         /// Saves a CSV File from a double[][]
         /// </summary>
-        /// <param name="dt"></param>
-        public void ExportCsv(double[][] dt)
+        /// <param name="data"></param>
+        public void ExportCsv(double[][] data)
         {
 
         }
@@ -128,18 +131,18 @@ namespace EasyCsvExporter
         /// <summary>
         /// Saves a CSV File from a double[][] as a new Thread
         /// </summary>
-        /// <param name="dt"></param>
-        public void ExportCSVAsync(double[][] dt)
+        /// <param name="data"></param>
+        public void ExportCSVAsync(double[][] data)
         {
-            export = new Thread(() => ExportCsv(dt));
+            export = new Thread(() => ExportCsv(data));
             export.Start();
         }
 
         /// <summary>
         /// Saves a CSV File from a generic List
         /// </summary>
-        /// <param name="dt"></param>
-        public void ExportCsv<T>(List<T> dt)
+        /// <param name="data"></param>
+        public void ExportCsv<T>(List<T> data)
         {
 
         }
@@ -148,10 +151,10 @@ namespace EasyCsvExporter
         /// Saves a CSV File from a generic List as a new Thread
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="dt"></param>
-        public void ExportCSVAsync<T>(List<T> dt)
+        /// <param name="data"></param>
+        public void ExportCSVAsync<T>(List<T> data)
         {
-            export = new Thread(() => ExportCsv(dt));
+            export = new Thread(() => ExportCsv(data));
             export.Start();
         }
 
