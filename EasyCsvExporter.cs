@@ -16,24 +16,11 @@ namespace EasyCsvExporter
         private string clmnSeperator;
         private bool hasClmnHeader;
         private Thread export;
-        private SaveFileDialog save;
+
 
         public string FilePath { get => filePath; set => filePath = value; }
         public bool HasClmnHeader { get => hasClmnHeader; set => hasClmnHeader = value; }
         public string ClmnSeperator { get => clmnSeperator; set => clmnSeperator = value; }
-
-
-        public CsvExport()
-        {
-            save = new SaveFileDialog();
-            string filter = "CSV file (*.csv)|*.csv";
-
-            save.Filter = filter;
-            save.ShowDialog();
-
-            if (save.FileName != null)
-                FilePath = save.FileName;
-        }
 
 
         /// <summary>
