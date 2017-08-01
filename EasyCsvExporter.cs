@@ -15,12 +15,14 @@ namespace EasyCsvExporter
         private string filePath;
         private string clmnSeperator;
         private bool hasClmnHeader;
+        private bool overWriteFile;
         private Thread export;
 
 
         public string FilePath { get => filePath; set => filePath = value; }
         public bool HasClmnHeader { get => hasClmnHeader; set => hasClmnHeader = value; }
         public string ClmnSeperator { get => clmnSeperator; set => clmnSeperator = value; }
+        public bool OverWriteFile {get => overWriteFile; set => overwrite = value; }
 
 
         /// <summary>
@@ -42,7 +44,7 @@ namespace EasyCsvExporter
             if (FilePath != null)
             {
                 //overwrite File
-                if (save.OverwritePrompt)
+                if (overWriteFile)
                 {
                     File.WriteAllText(FilePath, string.Empty);
                 }
