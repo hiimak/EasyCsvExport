@@ -16,11 +16,25 @@ namespace EasyCsvExporter
         private string clmnSeperator;
         private bool hasClmnHeader;
         private Thread export;
-
+        private SaveFileDialog save;
 
         public string FilePath { get => filePath; set => filePath = value; }
         public bool HasClmnHeader { get => hasClmnHeader; set => hasClmnHeader = value; }
         public string ClmnSeperator { get => clmnSeperator; set => clmnSeperator = value; }
+
+
+        public CsvExport()
+        {
+            save = new SaveFileDialog();
+            string filter = "CSV file (*.csv)|*.csv";
+
+            save.Filter = filter;
+            save.ShowDialog();
+
+            if (save.FileName != null)
+                FilePath = save.FileName;
+        }
+
 
         /// <summary>
         /// Saves a CSV File from a DataTable as a new Thread
@@ -38,17 +52,9 @@ namespace EasyCsvExporter
         /// <param name="data"></param>
         public void ExportCsv(DataTable data)
         {
-            SaveFileDialog save = new SaveFileDialog();
-
-            string filter = "CSV file (*.csv)|*.csv";
-
-            save.Filter = filter;
-            save.ShowDialog();
-
-            if (save.FileName != null)
+            if (FilePath != null)
             {
-                FilePath = save.FileName;
-
+                //overwrite File
                 if (save.OverwritePrompt)
                 {
                     File.WriteAllText(FilePath, string.Empty);
@@ -56,6 +62,7 @@ namespace EasyCsvExporter
 
                 StreamWriter writer = File.AppendText(FilePath);
 
+                //If Table has clmn headers
                 if (HasClmnHeader)
                 {
                     string header = "";
@@ -66,17 +73,17 @@ namespace EasyCsvExporter
                     writer.WriteLine(header);
                 }
 
-                for (int i = 0; i <= data.Rows.Count-1; i++)
+                for (int i = 0; i < data.Rows.Count; i++)
                 {
                     string cellvalue = "";
 
-                    for (int j = 0; j <= data.Columns.Count-1; j++)
+                    for (int j = 0; j < data.Columns.Count; j++)
                     {
                         cellvalue += data.Rows[i][j].ToString() + ClmnSeperator;
                     }
                     writer.WriteLine(cellvalue);
                 }
-                Console.WriteLine("Export CSV File: " + FilePath); 
+                Debug.Log("Export CSV File: " + FilePath); 
                 writer.Close();
             }
         }
